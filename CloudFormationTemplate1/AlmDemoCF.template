@@ -1,0 +1,90 @@
+﻿{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters": {
+    "Version": {
+      "Type": "String",
+      "Description": "The version of AlmDemoWebApp to deploy"
+    }
+  },
+  "Resources": {
+    "AlmDemoWebApp": {
+      "Type": "AWS::ElasticBeanstalk::Application",
+      "Properties": {
+        "Description": "ALM Demo Web Application for AWS Prototyping"
+      }
+    },
+    "AlmDemoWebAppVersion": {
+      "Type": "AWS::ElasticBeanstalk::ApplicationVersion",
+      "Properties": {
+        "ApplicationName": {
+          "Ref": "AlmDemoWebApp"
+        },
+        "SourceBundle": {
+          "S3Bucket": "almdemowebapp",
+          "S3Key": {"Fn::Join" : ["", ["AlmDemoWebApp.", {"Ref":"Version"}, ".zip"]]}
+        }
+      }
+    },
+    "AlmDemoWebAppTemplate": {
+      "Type": "AWS::ElasticBeanstalk::ConfigurationTemplate",
+      "Properties": {
+        "ApplicationName": {
+          "Ref": "AlmDemoWebApp"
+        },
+        "Description": "AlmDemoWebApp Template",
+        "OptionSettings": [
+          {
+            "Namespace": "aws:autoscaling:asg",
+            "OptionName": "MinSize",
+            "Value": "2"
+          },
+          {
+            "Namespace": "aws:autoscaling:asg",
+            "OptionName": "MaxSize",
+            "Value": "6"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:environment",
+            "OptionName": "EnvironmentType",
+            "Value": "LoadBalanced"
+          },
+		  {
+			"Namespace": "aws:ec2:vpc",
+			"OptionName": "VPCId",
+			"Value": "vpc-48807a2c"
+		  },
+		  {
+			"Namespace": "aws:ec2:vpc",
+			"OptionName": "Subnets",
+			"Value": "subnet-965a7ecf"
+		  },
+		  {
+			"Namespace": "aws:ec2:vpc",
+			"OptionName": "ELBSubnets",
+			"Value": "subnet-995a7ec0"
+		  },		  
+		  {
+			"Namespace": "aws:ec2:vpc",
+			"OptionName": "AssociatePublicIpAddress",
+			"Value": "true"
+		  }
+        ],
+        "SolutionStackName": "64bit Windows Server 2012 R2 running IIS 8.5"
+      }
+    },
+    "AlmDemoWebAppEnvironment": {
+      "Type": "AWS::ElasticBeanstalk::Environment",
+      "Properties": {
+        "ApplicationName": {
+          "Ref": "AlmDemoWebApp"
+        },
+        "TemplateName": {
+          "Ref": "AlmDemoWebAppTemplate"
+        },
+        "VersionLabel": {
+          "Ref": "AlmDemoWebAppVersion"
+        }
+      }
+    }
+  }
+}
