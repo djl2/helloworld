@@ -1,37 +1,37 @@
 ﻿{
-  "AWSTemplateFormatVersion": "2010-09-09",
+  "AWSTemplateFormatVersion": "2010-09-10",
   "Parameters": {
     "Version": {
       "Type": "String",
-      "Description": "The version of AlmDemoWebApp to deploy"
+      "Description": "The version of AlmHelloWorld to deploy"
     }
   },
   "Resources": {
-    "AlmDemoWebApp": {
+    "AlmHelloWorld": {
       "Type": "AWS::ElasticBeanstalk::Application",
       "Properties": {
         "Description": "ALM Demo Web Application for AWS Prototyping"
       }
     },
-    "AlmDemoWebAppVersion": {
+    "AlmHelloWorldVersion": {
       "Type": "AWS::ElasticBeanstalk::ApplicationVersion",
       "Properties": {
         "ApplicationName": {
-          "Ref": "AlmDemoWebApp"
+          "Ref": "AlmHelloWorld"
         },
         "SourceBundle": {
-          "S3Bucket": "almdemowebapp",
-          "S3Key": {"Fn::Join" : ["", ["AlmDemoWebApp.", {"Ref":"Version"}, ".zip"]]}
+          "S3Bucket": "almhelloworld",
+          "S3Key": {"Fn::Join" : ["", ["AlmHelloWorld.", {"Ref":"Version"}, ".zip"]]}
         }
       }
     },
-    "AlmDemoWebAppTemplate": {
+    "AlmHelloWorldTemplate": {
       "Type": "AWS::ElasticBeanstalk::ConfigurationTemplate",
       "Properties": {
         "ApplicationName": {
-          "Ref": "AlmDemoWebApp"
+          "Ref": "AlmHelloWorld"
         },
-        "Description": "AlmDemoWebApp Template",
+        "Description": "AlmHelloWorld Template",
         "OptionSettings": [
           {
             "Namespace": "aws:autoscaling:asg",
@@ -51,17 +51,17 @@
 		  {
 			"Namespace": "aws:ec2:vpc",
 			"OptionName": "VPCId",
-			"Value": "vpc-48807a2c"
+			"Value": "vpc-1d4cb679"
 		  },
 		  {
 			"Namespace": "aws:ec2:vpc",
 			"OptionName": "Subnets",
-			"Value": "subnet-965a7ecf"
+			"Value": "subnet-243d770f"
 		  },
 		  {
 			"Namespace": "aws:ec2:vpc",
 			"OptionName": "ELBSubnets",
-			"Value": "subnet-995a7ec0"
+			"Value": "subnet-243d770f"
 		  },		  
 		  {
 			"Namespace": "aws:ec2:vpc",
@@ -72,17 +72,17 @@
         "SolutionStackName": "64bit Windows Server 2012 R2 running IIS 8.5"
       }
     },
-    "AlmDemoWebAppEnvironment": {
+    "AlmHelloWorldEnvironment": {
       "Type": "AWS::ElasticBeanstalk::Environment",
       "Properties": {
         "ApplicationName": {
-          "Ref": "AlmDemoWebApp"
+          "Ref": "AlmHelloWorld"
         },
         "TemplateName": {
-          "Ref": "AlmDemoWebAppTemplate"
+          "Ref": "AlmHelloWorldTemplate"
         },
         "VersionLabel": {
-          "Ref": "AlmDemoWebAppVersion"
+          "Ref": "AlmHelloWorldVersion"
         }
       }
     }
