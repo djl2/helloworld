@@ -1,5 +1,5 @@
-﻿{
-  "AWSTemplateFormatVersion": "2010-09-10",
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
   "Parameters": {
     "Version": {
       "Type": "String",
@@ -8,17 +8,16 @@
   },
   "Resources": {
     "AlmHelloWorld": {
-      "Type": "AWS::ElasticBeanstalk::Application",
+	"Type": "AWS::ElasticBeanstalk::Application",
       "Properties": {
+	    "ApplicationName" : "AlmHelloWorld",
         "Description": "ALM Demo Web Application for AWS Prototyping"
       }
     },
     "AlmHelloWorldVersion": {
       "Type": "AWS::ElasticBeanstalk::ApplicationVersion",
       "Properties": {
-        "ApplicationName": {
-          "Ref": "AlmHelloWorld"
-        },
+        "ApplicationName": {"Ref": "AlmHelloWorld"},
         "SourceBundle": {
           "S3Bucket": "almhelloworld",
           "S3Key": {"Fn::Join" : ["", ["AlmHelloWorld.", {"Ref":"Version"}, ".zip"]]}
@@ -28,9 +27,7 @@
     "AlmHelloWorldTemplate": {
       "Type": "AWS::ElasticBeanstalk::ConfigurationTemplate",
       "Properties": {
-        "ApplicationName": {
-          "Ref": "AlmHelloWorld"
-        },
+        "ApplicationName": {"Ref": "AlmHelloWorld"},
         "Description": "AlmHelloWorld Template",
         "OptionSettings": [
           {
@@ -75,15 +72,12 @@
     "AlmHelloWorldEnvironment": {
       "Type": "AWS::ElasticBeanstalk::Environment",
       "Properties": {
-        "ApplicationName": {
-          "Ref": "AlmHelloWorld"
-        },
-        "TemplateName": {
-          "Ref": "AlmHelloWorldTemplate"
-        },
-        "VersionLabel": {
-          "Ref": "AlmHelloWorldVersion"
-        }
+        "ApplicationName": {"Ref": "AlmHelloWorld"},
+		"CNAMEPrefix" : "AlmHelloWorld-dev",
+		"Description" : "AlmHelloWorld Target Environment",
+		"EnvironmentName" : "AlmHelloWorld-dev",
+        "TemplateName": {"Ref": "AlmHelloWorldTemplate"},
+        "VersionLabel": {"Ref": "AlmHelloWorldVersion"}
       }
     }
   }
