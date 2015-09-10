@@ -15,7 +15,7 @@
     <CloudFormationPath Condition=" '$(CloudFormationPath)' == '' AND Exists('$(MSBuildExtensionsPath)\Amazon Web Services LLC\AWSToolkit.VS2010\cloudformation.targets')">$(MSBuildExtensionsPath)\Amazon Web Services LLC\AWSToolkit.VS2010</CloudFormationPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AlmDemoCF.template">
+    <Compile Include="almhelloworldcf.template">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
